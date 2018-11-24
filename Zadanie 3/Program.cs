@@ -70,12 +70,12 @@ namespace Zadanie_3
             t2.Start(new Interval(10, 22));
             t3.Start(new Interval(22, 33));
             t4.Start(new Interval(33, 40));
-            sw.Stop();
 
             t1.Join(); t2.Join(); t3.Join(); t4.Join();
+            sw.Stop();      
 
-            Console.WriteLine("#3. Liczenie całki w 4 wątkach (z zamkiem dopiero przy sumowaniu wyników" +
-                " dla poszczególnych przedziałów): ");
+            Console.WriteLine("#3. Liczenie całki w 4 wątkach (z zamkiem i lokalną zmienną dla" +
+                " każdego wątku): ");
             Console.WriteLine("\tElapsed milliseconds: " + sw.ElapsedMilliseconds);
             Console.WriteLine("\tWynik: " + Math.Round(CountIntegral.result, 2));
             sw.Reset();

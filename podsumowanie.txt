@@ -1,22 +1,27 @@
-(Dla porównania) Liczenie ca³ki normalnie - w jednym w¹tku:
-        Elapsed milliseconds: 490
+(Dla porównania) Liczenie ca³ki w jednym w¹tku:
+        Elapsed milliseconds: 536
         Wynik: 1919862,55
 
 #1. Liczenie ca³ki w 4 w¹tkach (bez zamka):
-        Elapsed milliseconds: 29
-        Wynik: 1376982,01
+        Elapsed milliseconds: 274
+        Wynik: 901460,83
 
 #2. Liczenie ca³ki w 4 w¹tkach (z zamkiem):
-        Elapsed milliseconds: 30
+        Elapsed milliseconds: 689
         Wynik: 1919862,55
 
-#3. Liczenie ca³ki w 4 w¹tkach (z zamkiem dopiero przy sumowaniu wyników dla poszczególnych przedzia³ów):
-        Elapsed milliseconds: 40
+#3. Liczenie ca³ki w 4 w¹tkach (z zamkiem i lokaln¹ zmienn¹ dla ka¿dego w¹tku):
+        Elapsed milliseconds: 297
         Wynik: 1919862,55
 
-Podsumowanie
+
+Podsumowanie:
 
 Jedynie w zadaniu #1 otrzymano wynik nieprawid³owy. Brak u¿ycia zamka spowodowa³ nieprawid³owe sumowanie do
 zmiennej, w której trzymamy wynik. Spowodowane jest to tym, ¿e do zmiennej próbuje siê dostaæ wiele w¹tków
-jednoczeœnie. Powoduje to, ¿e jeœli jeden w¹tek wraz z drugim dostan¹ siê do zmiennej to wtedy oba w¹tki wykonaj¹ swoj¹ robotê ale niestety bêd¹ operowaæ na tej samej wartoœci zmiennej jednoczeœnie. Ostatecznie otrzymujemy zawsze wynik mniejszy od prawid³owego, nigdy wiêkszy. U¿ycie wielu w¹tków i zamka w zadaniu
-#2 i #3 znacznie przyœpiesza obliczenia, a tak¿e zabezpiecza nas przed niepo¿¹danymi sytuacjami.
+jednoczeœnie. Powoduje to, ¿e jeœli jeden w¹tek wraz z drugim dostan¹ siê do zmiennej to wtedy oba w¹tki wykonaj¹ swoj¹ robotê ale niestety bêd¹ operowaæ na tej samej wartoœci zmiennej jednoczeœnie. Ostatecznie otrzymujemy zawsze wynik mniejszy od prawid³owego, nigdy wiêkszy.
+
+U¿ycie wielu w¹tków i zamka w zadaniu #2 powoduje otrzymanie prawid³owego wyniku, ale niestety nie
+przyœpiesza obliczeñ. Powodem mo¿e byæ to, ¿e w¹tki czekaj¹ na moment kiedy mog¹ wejœæ do sekcji krytycznej.
+
+Dopiero w rozwi¹zaniu zadania #3 widaæ poprawê szybkoœci dziêki u¿yciu lokalnej zmiennej dla ka¿dego z w¹tków.

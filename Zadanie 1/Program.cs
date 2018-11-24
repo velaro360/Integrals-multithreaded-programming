@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 
-namespace Zadanie_1_i_2
+namespace Zadanie_1
 {
     class Program
     {
@@ -26,7 +26,6 @@ namespace Zadanie_1_i_2
         {
             private static readonly double dx = 0.00001;
             public static double result = 0;
-            public static bool lock_var = false;
 
             public CountIntegral() { }
 
@@ -36,20 +35,8 @@ namespace Zadanie_1_i_2
 
                 for (double i = interval.a; i < interval.b; i += dx)
                 {
-                    if (lock_var == true)
-                    {
-                        lock (this)
-                        {
-                            if (i + dx >= interval.b) result += Function(i) * (interval.b - i);
-                            else result += Function(i) * dx;
-                        }
-                    }
-
-                    else
-                    {
-                        if (i + dx >= interval.b) result += Function(i) * (interval.b - i);
-                        else result += Function(i) * dx;
-                    }
+                    if (i + dx >= interval.b) result += Function(i) * (interval.b - i);
+                    else result += Function(i) * dx;
                 }
                    
             }
@@ -84,36 +71,13 @@ namespace Zadanie_1_i_2
             t2.Start(new Interval(10, 22));
             t3.Start(new Interval(22, 33));
             t4.Start(new Interval(33, 40));
-            sw.Stop();
 
             t1.Join(); t2.Join(); t3.Join(); t4.Join();
+            sw.Stop();
 
             Console.WriteLine("\n#1. Liczenie całki w 4 wątkach (bez zamka): ");
             Console.WriteLine("\tElapsed milliseconds: " + sw.ElapsedMilliseconds);
             Console.WriteLine("\tWynik: " + Math.Round(CountIntegral.result, 2));
-            CountIntegral.result = 0;
-            sw.Reset();
-
-            //********************************************************// Zadanie 2 - Liczenie z zamkiem w wielu wątkach
-
-            t1 = new Thread(new ParameterizedThreadStart(count_integral.Count));
-            t2 = new Thread(new ParameterizedThreadStart(count_integral.Count));
-            t3 = new Thread(new ParameterizedThreadStart(count_integral.Count));
-            t4 = new Thread(new ParameterizedThreadStart(count_integral.Count));
-
-            CountIntegral.lock_var = true;
-            sw.Start();
-            t1.Start(new Interval(1, 10));
-            t2.Start(new Interval(10, 22));
-            t3.Start(new Interval(22, 33));
-            t4.Start(new Interval(33, 40));
-            sw.Stop();
-
-            t1.Join(); t2.Join(); t3.Join(); t4.Join();
-            
-            Console.WriteLine("\n#2. Liczenie całki w 4 wątkach (z zamkiem): ");
-            Console.WriteLine("\tElapsed milliseconds: " + sw.ElapsedMilliseconds);
-            Console.WriteLine("\tWynik: " + Math.Round(CountIntegral.result,2));
             CountIntegral.result = 0;
             sw.Reset();
 
